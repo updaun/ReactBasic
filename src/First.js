@@ -1,50 +1,23 @@
 import React, { useState, useEffect } from "react";
 
+const useInput = (initalValue) => {
+    const [value, setValue] = useState(initalValue);
+    const onChange = (event) => {
+        console.log(event.target);
+    }
+    return { value, onChange };
+};
+
 const First = () => {
-    const [item, setItem] = useState(1);
-    const incrementItem = () => setItem(item + 1);
-    const decrementItem = () => setItem(item - 1);
+    const name = useInput("Mr.");
     return (
         <div>
-            <h1>First{item}</h1>
-            <h2>Start</h2>
-            <button onClick={incrementItem}>Increment</button>
-            <button onClick={decrementItem}>Decrement</button>
+            <h1>First</h1>
+            {/* <input placeholder="Name" value={name.value} onChange={name.onChange} /> */}
+            <input placeholder="Name" {...name} />
         </div>
     )
 }
 
-class AppUgly extends React.Component {
-    state = {
-        item: 1
-    }
-    render() {
-        const { item } = this.state;
-        return (
-            <div>
-                <h1>First{item}</h1>
-                <h2>Start</h2>
-                <button onClick={this.incrementItem}>Increment</button>
-                <button onClick={this.decrementItem}>Decrement</button>
-            </div>
-        );
-    }
-    incrementItem = () => {
-        this.setState(state => {
-            return {
-                item: state.item + 1
-            }
-        })
-    }
-    decrementItem = () => {
-        this.setState(state => {
-            return {
-                item: state.item - 1
-            }
-        })
-    }
 
-}
-
-// export default First;
-export default AppUgly;
+export default First;
