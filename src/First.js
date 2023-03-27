@@ -1,21 +1,30 @@
 import React, { useState, useEffect } from "react";
 
-const usePreventLeave = () => {
-    const listener = (event) => {
-        event.preventDefault();
-        event.returnValue = "";
+const useBeforeLeave = (onBefore) => {
+    const handle = (event) => {
+        //console.log("leaving");
+        //console.log(event);
+        const { clientY } = event;
+        // 커서가 위로 나갔을 때만 작동
+        if (clientY <= 0) {
+            onBefore();
+        }
     }
-    const enablePrevent = () => window.addEventListener("beforeunload", listener);
-    const disablePrevent = () => window.removeEventListener("beforeunload", listener);
-    return { enablePrevent, disablePrevent };
-}
+    useEffect(() => {
+        if (typeof onBefore !== "function") {
+            return;
+        }
+        document.addEventListener("mouseleave", handle);
+        return () => document.removeEventListener("mouseleave", handle);
+    }, []);
+};
 
 const First = () => {
-    const { enablePrevent, disablePrevent } = usePreventLeave();
+    const begForLife = () => console.log("Pls dont leave");
+    useBeforeLeave(begForLife);
     return (
         <div>
-            <button onClick={enablePrevent}>Protect</button>
-            <button onClick={disablePrevent}>Unprotect</button>
+            <div>Hi</div>
         </div>
     )
 }
