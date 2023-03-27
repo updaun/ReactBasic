@@ -1,22 +1,22 @@
 import React, { useState, useEffect, useRef } from "react";
 
-const useClick = (onClick) => {
+const useHover = (onHover) => {
     const element = useRef();
     // componentDidMount
     useEffect(() => {
-        if (typeof onClick !== "function") {
+        if (typeof onHover !== "function") {
             return;
         }
         // add event listener when component mount
         if (element.current) {
-            element.current.addEventListener("click", onClick);
+            element.current.addEventListener("mouseenter", onHover);
         }
         // clean up when component unmount
         // componentWillUnmount
         // component가 mount되지 않았을때 eventListener를 배치하지 않기 위해
         return () => {
             if (element.current) {
-                element.current.removeEventListener("click", onClick);
+                element.current.removeEventListener("mouseenter", onHover);
             }
         }
     }, []);
@@ -25,7 +25,7 @@ const useClick = (onClick) => {
 
 const First = () => {
     const sayHello = () => console.log("say hello");
-    const title = useClick(sayHello);
+    const title = useHover(sayHello);
     return (
         <div>
             <h1 ref={title}>Hi</h1>
